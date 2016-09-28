@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.4">
+<title>Dolphin Platform</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<link rel="stylesheet" href="./asciidoctor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</head>
+<body class="book toc2 toc-left">
+<div id="header">
+<h1>Dolphin Platform</h1>
+<div class="details">
+<span id="revnumber">version 0.9.0-SNAPSHOT</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">1. Introduction</a>
+<ul class="sectlevel2">
+<li><a href="#_architecture_overview">1.1. Architecture overview</a></li>
+</ul>
+</li>
+<li><a href="#_the_dolphin_platform_lifecycle">2. The Dolphin Platform Lifecycle</a>
+<ul class="sectlevel2">
+<li><a href="#_the_lifecycle_for_one_client">2.1. The Lifecycle for one client</a></li>
+<li><a href="#_creating_a_javafx_clients_that_supports_the_dolphin_platform_lifecycle">2.2. Creating a JavaFX clients that supports the Dolphin Platform Lifecycle</a></li>
+<li><a href="#_the_dolphin_platform_lifecycle_on_the_server">2.3. The Dolphin Platform Lifecycle on the server</a></li>
+</ul>
+</li>
+<li><a href="#_dolphin_platform_jumpstart">3. Dolphin Platform Jumpstart</a>
+<ul class="sectlevel2">
+<li><a href="#_creating_a_project">3.1. Creating a project</a></li>
+<li><a href="#_lazybones_jumpstart">3.2. Lazybones Jumpstart</a></li>
+</ul>
+</li>
+<li><a href="#_the_model_api">4. The Model API</a>
+<ul class="sectlevel2">
+<li><a href="#_creating_a_bean">4.1. Creating a bean</a></li>
+<li><a href="#supported-types">4.2. Supported types</a></li>
+<li><a href="#_using_collections">4.3. Using collections</a></li>
+<li><a href="#bean-hierarchies">4.4. Defining hierarchies</a></li>
+<li><a href="#_add_observer">4.5. Add observer</a></li>
+<li><a href="#_defining_the_model_of_a_mvc_group">4.6. Defining the model of a MVC group</a></li>
+<li><a href="#_working_with_the_beanmanager">4.7. Working with the BeanManager</a>
+<ul class="sectlevel3">
+<li><a href="#_creating_new_model_instances">4.7.1. Creating new model instances</a></li>
+<li><a href="#_removing_a_bean">4.7.2. Removing a bean</a></li>
+</ul>
+</li>
+<li><a href="#_the_dolphin_platform_garbage_collection">4.8. The Dolphin Platform garbage collection</a></li>
+<li><a href="#_how_to_work_with_the_model_api">4.9. How to work with the Model API</a></li>
+<li><a href="#_property_binding">4.10. Property Binding</a></li>
+</ul>
+</li>
+<li><a href="#_controller_api">5. Controller API</a>
+<ul class="sectlevel2">
+<li><a href="#_defining_a_controller">5.1. Defining a controller</a></li>
+<li><a href="#_defining_the_model">5.2. Defining the model</a></li>
+<li><a href="#_controller_actions">5.3. Controller actions</a></li>
+<li><a href="#_benefits_of_managed_controllers">5.4. Benefits of managed controllers</a></li>
+<li><a href="#_definition_of_the_client_scope">5.5. Definition of the client scope</a></li>
+</ul>
+</li>
+<li><a href="#_the_event_bus">6. The Event Bus</a>
+<ul class="sectlevel2">
+<li><a href="#_general_overview_of_the_event_bus">6.1. General overview of the event bus</a></li>
+<li><a href="#_defining_a_topic">6.2. Defining a topic</a></li>
+<li><a href="#_sending_an_event">6.3. Sending an event</a></li>
+<li><a href="#_receiving_events">6.4. Receiving events</a></li>
+<li><a href="#_use_cases_for_the_event_bus">6.5. Use-cases for the event bus</a></li>
+</ul>
+</li>
+<li><a href="#_javaee_integration">7. JavaEE Integration</a>
+<ul class="sectlevel2">
+<li><a href="#_configuration_of_the_application">7.1. Configuration of the application</a></li>
+<li><a href="#_next_steps">7.2. Next steps</a></li>
+<li><a href="#_using_the_jumpstart">7.3. Using the jumpstart</a></li>
+</ul>
+</li>
+<li><a href="#_spring_integration">8. Spring Integration</a>
+<ul class="sectlevel2">
+<li><a href="#_defining_the_main_class_of_the_application">8.1. Defining the main class of the application</a></li>
+<li><a href="#_configuration_of_the_application_2">8.2. Configuration of the application</a></li>
+<li><a href="#_next_steps_2">8.3. Next steps</a></li>
+<li><a href="#_using_the_jumpstart_2">8.4. Using the jumpstart</a></li>
+</ul>
+</li>
+<li><a href="#_server_configuration">9. Server configuration</a>
+<ul class="sectlevel2">
+<li><a href="#_supported_properties">9.1. Supported properties</a></li>
+</ul>
+</li>
+<li><a href="#_javafx_client_api">10. JavaFX client API</a></li>
+<li><a href="#_validation_support">11. Validation Support</a>
+<ul class="sectlevel2">
+<li><a href="#_using_validation_constraints">11.1. Using validation constraints</a></li>
+<li><a href="#_validate_a_model">11.2. Validate a model</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Dolphin Platform is a framework that implements the remote presentation model pattern and provides a modern way to create enterprise applications. As you might know there are several of these frameworks out there. So let us start by describing what makes the Dolphin Platform special and why we decided to create it.</p>
+</div>
+<div class="sect2">
+<h3 id="_architecture_overview"><a class="anchor" href="#_architecture_overview"></a>1.1. Architecture overview</h3>
+<div class="paragraph">
+<p>In the Dolphin Platform, all models will automatically be synchronized between client and server. Thus, you don&#8217;t need to think about any specific endpoints or requests.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/model-sync.png" alt="model sync">
+</div>
+<div class="title">Figure 1. Synchronization of the model</div>
+</div>
+<div class="paragraph">
+<p>Based on this, the Dolphin Platform defines server side controllers that contain all the controller logic for a specific view. The lifecycle of these controllers is automatically synchronized with the view lifecycle. With this approach you have a MVC group for each client view with a synchronized model and a managed controller.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/getting-started-1.png" alt="getting started 1">
+</div>
+<div class="title">Figure 2. Different clients</div>
+</div>
+<div class="paragraph">
+<p>The Dolphin Platform provides a server and client framework that let you easily write applications based on the described pattern. To do so the platform contains support for well known sever framework like JavaEE or Spring and several implementations to create clients by using for example JavaFX or Polymer.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_dolphin_platform_lifecycle"><a class="anchor" href="#_the_dolphin_platform_lifecycle"></a>2. The Dolphin Platform Lifecycle</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Dolphin Platform provides lifecycles that defines the communication between client and server and the internal
+lifecycle of a MVC group.</p>
+</div>
+<div class="sect2">
+<h3 id="_the_lifecycle_for_one_client"><a class="anchor" href="#_the_lifecycle_for_one_client"></a>2.1. The Lifecycle for one client</h3>
+<div class="paragraph">
+<p>Each clients that is connected to the Dolphin Platform server has its own lifecycle. This lifecycle starts with the
+inital connection and will end when the client disconnects from the server. The Dolphin Platform provides several classes in its public
+API that wrap the lifecycle and make it quite easy to create an application that is based on the Dolphin
+Platform.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_a_javafx_clients_that_supports_the_dolphin_platform_lifecycle"><a class="anchor" href="#_creating_a_javafx_clients_that_supports_the_dolphin_platform_lifecycle"></a>2.2. Creating a JavaFX clients that supports the Dolphin Platform Lifecycle</h3>
+<div class="paragraph">
+<p>The <code>dolphin-platform-client-javafx</code> module provides the abstract <code>DolphinPlatformApplication</code> class that can easily be used
+to create a JavaFX based client for the Dolphin Platform. Internally the class already defines the Dolphin Platform
+lifecycle and by extending the class for a custom client a developer only needs to define some general information.
+ The following code shows how a basic implementation might look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyCustomClient</span> <span class="directive">extends</span> DolphinPlatformApplication { <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="predefined-type">String</span> getServerEndpoint() {
+        <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:8080/dolphin</span><span class="delimiter">&quot;</span></span>; <i class="conum" data-value="2"></i><b>(2)</b>
+    }
+
+     <span class="annotation">@Override</span>
+     <span class="directive">protected</span> <span class="type">void</span> start(Stage s, ClientContext c) <span class="directive">throws</span> <span class="exception">Exception</span> { <i class="conum" data-value="3"></i><b>(3)</b>
+         s.setScene(<span class="keyword">new</span> Scene(<span class="keyword">new</span> <span class="predefined-type">Label</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello Dolphin</span><span class="delimiter">&quot;</span></span>)));
+         s.show();
+     }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Our custom client extends the abstract <code>DolphinPlatformApplication</code> class</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>We need to implement the abstract method by providing the server endpoint of the Dolphin Platform. This is <code>/dolphin</code>
+by default but can be configured on the server</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Like the void <code>start(Stage primaryStage)</code> method of the JavaFX <code>Application</code> class this method will automatically be
+called once JavaFX is ready. In additon this method provides the Dolphin Platform <code>ClientContext</code> as an parameter. By
+doing so you already have a connection to the Dolphin Platform server once this method is called. The method is called on
+the JavaFX Platform thread.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The given example already creates a connection to the Dolphin Platform server and shows an UI once the connection is
+established and JavaFX is ready. In addition this client already provides a disconnect once the UI will be closed by a
+user and some raw error handling. All this is defined in the <code>DolphinPlatformApplication</code> class but can simply be overwritten.
+If you want more control of the error handling you can simply provide a custom implementation for the methods
+<code>void onInitializationError(Stage primaryStage, ClientInitializationException initializationException)</code> and
+<code>void onShutdownException(ClientShutdownException shutdownException)</code>. In addition you can add some general functionality
+to the shutdown of the client by defining a specific implementation of the <code>void onShutdown()</code> method. A client that defines
+specific functionallity for all this states of the lifecycle might look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyCustomClient</span> <span class="directive">extends</span> DolphinPlatformApplication {
+
+    <span class="directive">private</span> Log LOG = LoggerFactory.getLogger(MyCustomClient.class); <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="predefined-type">String</span> getServerEndpoint() {
+        <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:8080/dolphin</span><span class="delimiter">&quot;</span></span>;
+    }
+
+     <span class="annotation">@Override</span>
+     <span class="directive">protected</span> <span class="type">void</span> start(Stage s, ClientContext c) <span class="directive">throws</span> <span class="exception">Exception</span> {
+         LOG.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">Dolphin Platform Lifecycle init successful</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="2"></i><b>(2)</b>
+         s.setScene(<span class="keyword">new</span> Scene(<span class="keyword">new</span> <span class="predefined-type">Label</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello Dolphin</span><span class="delimiter">&quot;</span></span>)));
+         s.show();
+     }
+
+     <span class="annotation">@Override</span>
+     <span class="directive">protected</span> <span class="type">void</span> onInitializationError(Stage s, ClientInitializationException e) {
+         LOG.error(<span class="string"><span class="delimiter">&quot;</span><span class="content">Dolphin Platform Lifecycle error on init</span><span class="delimiter">&quot;</span></span>, e); <i class="conum" data-value="3"></i><b>(3)</b>
+         <span class="local-variable">super</span>.onInitializationError(s, e);
+     }
+
+     <span class="annotation">@Override</span>
+     <span class="directive">protected</span> <span class="type">void</span> onShutdownException(ClientShutdownException e) {
+         LOG.error(<span class="string"><span class="delimiter">&quot;</span><span class="content">Dolphin Platform Lifecycle error on shutdown</span><span class="delimiter">&quot;</span></span>, e); <i class="conum" data-value="4"></i><b>(4)</b>
+         <span class="local-variable">super</span>.onShutdownException(e);
+     }
+
+     <span class="annotation">@Override</span>
+     <span class="directive">protected</span> <span class="type">void</span> onShutdown() {
+         LOG.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">Dolphin Platform Lifecycle shutdown successful</span><span class="delimiter">&quot;</span></span>); <i class="conum" data-value="5"></i><b>(5)</b>
+         <span class="local-variable">super</span>.onShutdown();
+     }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>In this custom implementation a logger should be used to log information of the lifecycle</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Once the start method is called the Dolphin Platform initialization has been done and the client is connected to the server</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>If an exception occurs on the initialization this method will be called. You should call the super method in a custom
+implementation since a clear shutdown is already defined in the <code>DolphinPlatformApplication</code> class.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>If an exception occurs on the shutdown this method will be called. You should call the super method in a custom
+implementation since a clear shutdown is already defined in the <code>DolphinPlatformApplication</code> class.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Once the start method is called the Dolphin Platform shutdown has been done and the client can be destroyed. You
+should call the super method in a custom implementation since a clear shutdown is already defined in the
+<code>DolphinPlatformApplication</code> class.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To be true these are not the only moments in that the Dolphin Platform can throw an exception. Maybe the server shuts
+down when a client is still connected to the server. In this case the <code>DolphinPlatformApplication</code> class
+provides an additional method that can be overridden to handle this kind of remoting exception:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyCustomClient</span> <span class="directive">extends</span> DolphinPlatformApplication {
+
+    <span class="directive">private</span> Log LOG = LoggerFactory.getLogger(MyCustomClient.class);
+
+    <span class="annotation">@Override</span>
+    <span class="directive">protected</span> <span class="predefined-type">String</span> getServerEndpoint() {
+        <span class="keyword">return</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">http://localhost:8080/dolphin</span><span class="delimiter">&quot;</span></span>;
+    }
+
+     <span class="annotation">@Override</span>
+     <span class="directive">protected</span> <span class="type">void</span> start(Stage s, ClientContext c) <span class="directive">throws</span> <span class="exception">Exception</span> {
+         LOG.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">Dolphin Platform Lifecycle init successful</span><span class="delimiter">&quot;</span></span>);
+         s.setScene(<span class="keyword">new</span> Scene(<span class="keyword">new</span> <span class="predefined-type">Label</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello Dolphin</span><span class="delimiter">&quot;</span></span>)));
+         s.show();
+     }
+
+     <span class="directive">protected</span> <span class="type">void</span> onRemotingError(Stage s, DolphinRemotingException e) {
+         LOG.error(<span class="string"><span class="delimiter">&quot;</span><span class="content">Dolphin Platform remoting error</span><span class="delimiter">&quot;</span></span>, e); <i class="conum" data-value="1"></i><b>(1)</b>
+         <span class="local-variable">super</span>.onRemotingError(primaryStage, e);
+     }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This method is called for a remoting error that is thrown at runtime. You should call the super method in a custom
+implementation since a clear shutdown is already defined in the <code>DolphinPlatformApplication</code> class.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_dolphin_platform_lifecycle_on_the_server"><a class="anchor" href="#_the_dolphin_platform_lifecycle_on_the_server"></a>2.3. The Dolphin Platform Lifecycle on the server</h3>
+<div class="paragraph">
+<p>A Dolphin Platform based server provides a http endpoint that is used for the communication between client and server.
+Whenever a new client is created and connects to the server a session is created on the server. The Dolphin Platform
+provides its own session type that is called DolphinSession. This session type is "lower than the http session".
+The DolphinSession is important if you want to create web application, for example. Since all the tabs of a browser share
+the same http session it&#8217;s hard to define data that is only related to one tab in the browser. In that case the lifecycle
+of a DolphinSession is bound to a tab in the browser and ends when the tab will be closed.</p>
+</div>
+<div class="paragraph">
+<p>Once a client disconnect its connection to the server the DolphinSession for this client will automatically be removed. If
+a client can not disconnect because of an exception or maybe the Java process on the client is killed by an user the
+DolphinSession will automatically be removed with the http session on the server.</p>
+</div>
+<div class="paragraph">
+<p>To react on the lifecycle of a client on the server a developer can provide implementations of the <code>DolphinSessionListener</code>
+interface that is part of the public server API of the Dolphin Platform. Each implementation of the <code>DolphinSessionListener</code>
+interface that is annotated with <code>@DolphinListener</code> will be instantiated at runtime and used as a listener for created and
+destroyed session. A basic implementation of such a class might look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinListener</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyCustomListener</span> <span class="directive">implements</span> DolphinSessionListener {
+
+    <span class="directive">private</span> Log LOG = LoggerFactory.getLogger(MyCustomListener.class);
+
+    <span class="type">void</span> sessionCreated(DolphinSession s) {
+         LOG.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">Session with id {0} created!</span><span class="delimiter">&quot;</span></span>, s.getId());    <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+
+    <span class="type">void</span> sessionDestroyed(DolphinSession s) {
+         LOG.info(<span class="string"><span class="delimiter">&quot;</span><span class="content">Session with id {0} destroyed!</span><span class="delimiter">&quot;</span></span>, s.getId());  <i class="conum" data-value="2"></i><b>(2)</b>
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This method is called for each new DolphinSession that is created on the server</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>This method is called for each destroyed DolphinSession on the server</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dolphin_platform_jumpstart"><a class="anchor" href="#_dolphin_platform_jumpstart"></a>3. Dolphin Platform Jumpstart</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To get started with Dolphin Platform and create your first client-server-project several Maven archetypes are provided
+by Dolphin Platform. Based on this archetypes it&#8217;s quite easy to create a full functional client-server-application as a
+perfect base for your own project or to learn the different APIs of Dolphin Platform by simply experimenting with the
+generated project.</p>
+</div>
+<div class="sect2">
+<h3 id="_creating_a_project"><a class="anchor" href="#_creating_a_project"></a>3.1. Creating a project</h3>
+<div class="paragraph">
+<p>To create a new project only Maven must be installed on your system. Once Maven is installed you can create a complete
+project with only one shell command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">$ mvn archetype:generate -Dfilter=com.canoo.dolphin-platform:</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The command will start a Maven process that creates the new project. To do so you can choose between different options
+in a shell wizard:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/jumpstart.png" alt="jumpstart">
+</div>
+<div class="title">Figure 3. The shell wizard</div>
+</div>
+<div class="paragraph">
+<p>As a first step you need to choice on what archetype your project should depend. Dolphin Platform provides several
+archetypes to create for example projects that uses Spring Boot or JavaEE on the server. After you have defined the
+archetype you need to select a version of the archetype. This version is related to the Dolphin Platform version the
+archetype depends on. Here it&#8217;s best practice to simply select the last version. As a last step you need to specify
+<code>groupId</code>, <code>artifactId</code> and the <code>version</code> of your new project. Once this is done the generation might tackle some time
+on the first call since all needed dependencies and plugins are downloaded to your computer. You can simply import the
+generated project in any IDE of your choice that supports Maven projects. The generated project contains a readme.md
+file that describes how the client and server parts of the project can be started.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lazybones_jumpstart"><a class="anchor" href="#_lazybones_jumpstart"></a>3.2. Lazybones Jumpstart</h3>
+<div class="paragraph">
+<p>Next to the Maven archetype we provide a <a href="https://github.com/pledbrook/lazybones">Lazybones</a> template for application that
+are based on the Dolphin Platform. The project and a getting-started
+documentation <a href="https://github.com/canoo/dolphin-platform-lazybones-templates">can be found at github</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_model_api"><a class="anchor" href="#_the_model_api"></a>4. The Model API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>One of the core features and maybe the most important concept of Dolphin Platform is the model synchronization between
+client and server. For each view in the client a controller instance "lives" in the server that defines all the logic of
+the view. A model is automatically shared and synchronized between the client view and the controller on the server.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/model-sync.png" alt="model sync">
+</div>
+<div class="title">Figure 4. Synchronization of the model</div>
+</div>
+<div class="paragraph">
+<p>Such a model can be a bean or a hierarchy of several beans. Dolphin Platform provides an API to create full observable
+beans for the model layer.</p>
+</div>
+<div class="sect2">
+<h3 id="_creating_a_bean"><a class="anchor" href="#_creating_a_bean"></a>4.1. Creating a bean</h3>
+<div class="paragraph">
+<p>A model for the Dolphin Platform can simply be defined as a Java bean but instead of using primitive date types for all
+the attributes of the bean Dolphin Platform provides the <code>Property&lt;V&gt;</code> interface that should be used to define
+attributes. Based on this a definition for a bean with only one String attribute will look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinBean</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyModel</span> {
+
+    <span class="directive">private</span> Property&lt;<span class="predefined-type">String</span>&gt; value;
+
+    <span class="directive">public</span> Property&lt;<span class="predefined-type">String</span>&gt; valueProperty() {
+        <span class="keyword">return</span> value;
+    }
+
+    <span class="directive">public</span> <span class="predefined-type">String</span> getValue() {
+        <span class="keyword">return</span> value.get();
+    }
+
+    <span class="directive">public</span> <span class="type">void</span> setValue(<span class="predefined-type">String</span> value) {
+           <span class="local-variable">this</span>.value.set(value);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Maybe you ask yourself why the <code>@DolphinBean</code> annotation is needed. Internally the Dolphin Platform checks if a bean
+class is annotated with <code>@DolphinBean</code> and will trow a <code>BeanDefinitionException</code> if the annotation is not present. By
+doing so it will be easy to check if you use the right model classes. We plan to add some additional features based on
+the annotation in the future. One example can be an annotation processor that checks if all classes that are defined as
+the Dolphin Platform beans (by adding the <code>@DolphinBean</code> annotation) are valid Dolphin Platform beans.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="supported-types"><a class="anchor" href="#supported-types"></a>4.2. Supported types</h3>
+<div class="paragraph">
+<p>Currently Dolphin Platform properties and collections support the following types as content:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Integer</p>
+</li>
+<li>
+<p>Long</p>
+</li>
+<li>
+<p>Float</p>
+</li>
+<li>
+<p>Double</p>
+</li>
+<li>
+<p>Byte</p>
+</li>
+<li>
+<p>Short</p>
+</li>
+<li>
+<p>Boolean</p>
+</li>
+<li>
+<p>String</p>
+</li>
+<li>
+<p>Date <em>(since version 0.8.4)</em></p>
+</li>
+<li>
+<p>Calendar <em>(since version 0.8.4)</em></p>
+</li>
+<li>
+<p>Enums <em>(since version 0.8.4)</em></p>
+</li>
+<li>
+<p>Dolphin Platform Bean <a href="#bean-hierarchies">(see description)</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+As some browsers have issues with Timezone, one has to use UTC. If the provided Calendar is not set to UTC, it
+will be converted.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_collections"><a class="anchor" href="#_using_collections"></a>4.3. Using collections</h3>
+<div class="paragraph">
+<p>The first example of a Dolphin Platform bean contained only a String property but most of the time you need more complex
+beans. That&#8217;s why we added collection support to the Dolphin Platform model API. Next to the properties a bean can contain
+lists that are define by the <code>ObservableList&lt;V&gt;</code> interface. The interface extends the default Java <code>List</code> interface by adding
+support for observers. A Dolphin Platform bean that contains a list might look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinBean</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyModel</span> {
+
+    <span class="directive">private</span> ObservableList&lt;<span class="predefined-type">String</span>&gt; values;
+
+    <span class="directive">public</span> ObservableList&lt;<span class="predefined-type">String</span>&gt; getValues() {
+        <span class="keyword">return</span> values;
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A <code>ObservableList&lt;V&gt;</code> supports <a href="#supported-types">all the same generic types as a property.</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="bean-hierarchies"><a class="anchor" href="#bean-hierarchies"></a>4.4. Defining hierarchies</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_add_observer"><a class="anchor" href="#_add_observer"></a>4.5. Add observer</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_defining_the_model_of_a_mvc_group"><a class="anchor" href="#_defining_the_model_of_a_mvc_group"></a>4.6. Defining the model of a MVC group</h3>
+<div class="paragraph">
+<p>As you can see in the following image each MVC group in the Dolphin Platform contains a model. A MVC group is based on the
+MVC pattern and contains a controller, a view and a model. In the Dolphin Platform approach the controller lives on the server
+and the view is defined on the client. The model is shared between the client and the server.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/model-sync.png" alt="model sync">
+</div>
+<div class="title">Figure 5. A MVC group</div>
+</div>
+<div class="paragraph">
+<p>As we have seen until now a model is defined by properties and collections. Since <code>Property&lt;V&gt;</code> and <code>ObservableList&lt;V&gt;</code> are
+defined as interfaces and no model provides a specific constructor it&#8217;s still not clear how a new instance of a model should
+created. Thanks to the Dolphin Platform architecture a developer don&#8217;t need to think about the model instanciation or the
+lifecycle of a model. Whenever a new MVC group is created by the platform the model instance will be created automatically.
+To do so the model must be defined in the controller. The Dolphin Platform provides the <code>@DolphinModel</code> annotation that is
+used to inject the created model instance in the controller instance. The following sample code shows a minimal controller
+that defines its model type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>@DolphinController
+public class MyController {
+
+    @DolphinModel
+    private MyModel model;
+
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The model instance will be automatically synchronized with the client. Since the model is completelly observable you can
+ simply bind the properties and lists that are defined in the model to your UI components in the client.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_working_with_the_beanmanager"><a class="anchor" href="#_working_with_the_beanmanager"></a>4.7. Working with the BeanManager</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+<div class="sect3">
+<h4 id="_creating_new_model_instances"><a class="anchor" href="#_creating_new_model_instances"></a>4.7.1. Creating new model instances</h4>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_removing_a_bean"><a class="anchor" href="#_removing_a_bean"></a>4.7.2. Removing a bean</h4>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_dolphin_platform_garbage_collection"><a class="anchor" href="#_the_dolphin_platform_garbage_collection"></a>4.8. The Dolphin Platform garbage collection</h3>
+<div class="paragraph">
+<p>The Dolphin Platform contains a garbage collection on the server that will automatically remove all bean instances from
+the remoting layer that aren&#8217;t referenced anymore by other beans. Currently the garbage collection is an experimental
+feature and it&#8217;s not active by default. If you want to use the garbage collection you need to add
+<code>garbageCollectionActive=true</code> to the <code>dolphin.properties</code> file (see chapter <strong>Server configuration</strong>).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_work_with_the_model_api"><a class="anchor" href="#_how_to_work_with_the_model_api"></a>4.9. How to work with the Model API</h3>
+<div class="paragraph">
+<p>To get a better overview of the API that helps you to define presentation models in Dolphin Platform we added a small
+example.
+Let&#8217;s say we have the following view that can be part of a photo library app:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/model-example-1.png" alt="model example 1">
+</div>
+<div class="title">Figure 6. Example Application</div>
+</div>
+<div class="paragraph">
+<p>In this view, we have several elements that need a data model. If the data of this app is stored on a server the data
+model must be shared between the client and the server. When having a look at the screen we can see 3 different elements
+that need data from the data model to visualize itself or provide user interaction:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The title of the screen needs a String as its content. We can display the title of a photo album or an internationalized
+string.</p>
+</li>
+<li>
+<p>The slider that defines a value. Let&#8217;s imagine that the interaction with the slider changes the size of the pictures in
+the main area. Maybe the last value of the slider should be stored on the server to automatically save user preferences</p>
+</li>
+<li>
+<p>All pictures in the main area. As you can see each card in this area contains an image and maybe a badge in the top
+right corner. A badge element in the top right corner visualizes if the photo is flagged.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Based on this definition we would create a presentation model that might look like this one:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/model-example-2.png" alt="model example 2">
+</div>
+<div class="title">Figure 7. The presentation model</div>
+</div>
+<div class="paragraph">
+<p>When defining such a model in JavaFX, you can use the cool property API and the observable collections that are part of
+JavaFX. Modern JavaScript frameworks like AngularJS or Polymer provide a similar behavior and therefore we decided to
+offer the same benefits when defining models with the Dolphin Platform. In Dolphin Platform you work with properties and
+observable collections, too. Therefore it really easy to define a hierarchical model for your view. A model for the
+shown view might look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinBean</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">PhotoOverviewModel</span> {
+
+  <span class="directive">private</span> Property&lt;<span class="predefined-type">String</span>&gt; title;
+
+  <span class="directive">private</span> Property&lt;<span class="predefined-type">Double</span>&gt; sliderValue;
+
+  <span class="directive">private</span> ObservableList&lt;PhotoModel&gt; photos;
+
+  <span class="comment">//getter &amp; setter</span>
+
+}
+
+<span class="annotation">@DolphinBean</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">PhotoModel</span> {
+
+  <span class="directive">private</span> Property&lt;<span class="predefined-type">String</span>&gt; imageUrl;
+
+  <span class="directive">private</span> Property&lt;<span class="predefined-type">Boolean</span>&gt; flagged;
+
+  <span class="comment">//getter &amp; setter</span>
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All properties and collections in the Dolphin Platform are observable and therefore it&#8217;s quite easy to observe them on
+the client and the server:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">myModel.getTitleProperty().onChange(e -&gt; <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">New title: </span><span class="delimiter">&quot;</span></span> + e.getNewValue()));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For all client APIs we support first class support for the Dolphin Platform properties. When working with JavaFX for
+example it&#8217;s quite easy and intuitive to bind a synchronized Dolphin Platform property to a JavaFX property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">FXBinder.bind(booleanJavaFXProperty).bidirectionalTo(booleanDolphinProperty);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>On JavaScript clients the handling is even more elegant as you can bind the Dolphin Platform model directly in HTML.</p>
+</div>
+<div class="paragraph">
+<p>The main benefit of this concept is that you can use the same model classes on the server and the client. Because the
+model will automatically be synchronized between the view and the server controller it feels like you work with the same
+instance. By doing so you can simply bind a string property to a textfield in the view and observe it&#8217;s value on the
+server. The change events will automatically be fired on the server when you start typing in the textfield.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_property_binding"><a class="anchor" href="#_property_binding"></a>4.10. Property Binding</h3>
+<div class="paragraph">
+<p>The Dolphin Platform provides an easy way to create a bidirectinal binding between 2 properties of the same generic type.
+Currently the binding API only supports properties that are defined in the same client session. If you want to sync
+properties on several clients the event bus is currently the best way to do this.
+To create a binding between 2 properties in the same client session you need the <code>PropertyBinder</code> class. An instance of
+this class can simply be injected in any controller:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyController</span> {
+
+    <span class="annotation">@Inject</span>
+    <span class="directive">private</span> PropertyBinder binder;
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All binding are definied by qualifiers that are representated by the <code>Qualifier</code> class. For a new binding you need to
+define a <code>Qualifier</code> instance that defines the generic type of the properties that should be bound. Since you can reuse
+the <code>Qualifier</code> instance for all bindings of that type it&#8217;s best practice to create a static instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">interface</span> <span class="class">MyConstants</span> {
+
+    <span class="directive">public</span> <span class="directive">final</span> <span class="directive">static</span> Qualifier&lt;<span class="predefined-type">String</span>&gt; userNameQualifier = Qualifier&lt;<span class="predefined-type">String</span>&gt;.create();
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have the <code>PropertyBinder</code> instance and the <code>Qualifier</code> you can defining bindings. To do so you define the same
+qualifier for all properties that should be bound:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">propertyBinder.bind(model.userNameProperty(), MyConstants.userNameQualifier);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By using the same qualifier in several controller classes you can simply bind properties in a client scope without doing
+manual updates.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_controller_api"><a class="anchor" href="#_controller_api"></a>5. Controller API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When using Dolphin Platform the frontend of an application is splitted in several view. For each view instance in the
+client a controller instance is managed in the server.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/mvc1.png" alt="mvc1">
+</div>
+<div class="title">Figure 8. Views and Controllers</div>
+</div>
+<div class="sect2">
+<h3 id="_defining_a_controller"><a class="anchor" href="#_defining_a_controller"></a>5.1. Defining a controller</h3>
+<div class="paragraph">
+<p>A controller type is defined as a Java class on the server. This is done with the <code>@DolphinController</code> annotation. Each
+controller class on the must be annotated by using this annotation to define the class as a Dolphin Platform controller:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="comment">//...</span>
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each controller type / class is marked by an unique identifier. If developers don&#8217;t specify an identifier on their own
+the full name of the controller class is used. In the given example the controller would have the identifier
+<code>com.company.app.controller.MyViewController</code> (if it&#8217;s part of the <code>com.company.app.controller</code> package). In general
+it&#8217;s a better to specify an identifier for the controller class since refactoring (like moving the controller class in
+a different package) can change its identifier. A custom identifier for a controller can simply be defined by using the
+<code>@DolphinController</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">ViewController1</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="comment">//...</span>
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example the controller has the unique identifier <code>ViewController1</code>. When defining custom names for the
+controllers it&#8217;s important to always specify a controller name that is unique in the whole application. Since the
+identifier is used on the client to access a specific controller type it&#8217;s best practice to define the controller names
+as constants in a module that is shared between client and server (both depend on the module).</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/common.png" alt="common">
+</div>
+<div class="title">Figure 9. Dependencies of a common module</div>
+</div>
+<div class="paragraph">
+<p>All the constants can easily be specified in an interface, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">interface</span> <span class="class">ControllerConstants</span> {
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> CONTROLLER1_NAME = <span class="string"><span class="delimiter">&quot;</span><span class="content">MyViewController</span><span class="delimiter">&quot;</span></span>;
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">String</span> CONTROLLER2_NAME = <span class="string"><span class="delimiter">&quot;</span><span class="content">ViewController2</span><span class="delimiter">&quot;</span></span>;
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By doing so the constants can easily be used to specify the identifier of a controller:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(ControllerConstants.CONTROLLER1_NAME)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="comment">//...</span>
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_defining_the_model"><a class="anchor" href="#_defining_the_model"></a>5.2. Defining the model</h3>
+<div class="paragraph">
+<p>Since the view and the controller share a model it&#8217;s important that the controller knows about the model. To do so the
+model type must be specified in the controller class. Whenever a controller will be created the model will automatically
+be injected in the controller. To define the model in the controller Dolphin Platform provides the <code>@DolphinModel</code>
+annotation. By using this annotation the related model type can be specified in a controller and simply injected at runtime:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(ControllerConstants.CONTROLLER1_NAME)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="annotation">@DolphinModel</span>
+    <span class="directive">private</span> MyModel model;
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>How a model can be specified and how it can be used on the client and the server can be found in the documentation of
+the model API.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_controller_actions"><a class="anchor" href="#_controller_actions"></a>5.3. Controller actions</h3>
+<div class="paragraph">
+<p>Actions are endpoints of the controller that can be triggered by the view. For example this can happen when a user
+clicks a button in the client. This button action will than trigger an action in the server controller instance that
+maybe stores some date in the database or refresh the model.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/action.png" alt="action">
+</div>
+<div class="title">Figure 10. Ccalling an action</div>
+</div>
+<div class="paragraph">
+<p>A controller action is defined as a method in the controller that is annotated by <code>@DolphinAction</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(ControllerConstants.CONTROLLER1_NAME)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="annotation">@DolphinModel</span>
+    <span class="directive">private</span> MyModel model;
+
+    <span class="annotation">@DolphinAction</span>
+    <span class="directive">public</span> <span class="type">void</span> onAction() {
+        <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Action was triggered!</span><span class="delimiter">&quot;</span></span>);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Because the action will be triggered by the client it must be specified by an identifier. This identifier must be unique
+in the given controller type. By default the name of the method will be used but as described for the <code>@DolphinController</code>
+annotation it&#8217;s best practice to specify a custom constant name to avoid refactoring issues:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(ControllerConstants.CONTROLLER1_NAME)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="annotation">@DolphinModel</span>
+    <span class="directive">private</span> MyModel model;
+
+    <span class="annotation">@DolphinAction</span>(ControllerConstants.ACTION1_NAME)
+    <span class="directive">public</span> <span class="type">void</span> onAction() {
+        <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Action was triggered!</span><span class="delimiter">&quot;</span></span>);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Sometimes it&#8217;s necessary to submit parameters to the server action. Like controllers and actions parameters must be
+specified by an identifier. To define the identifier for a parameter of the action Dolphin Platform provides the
+<code>@Param</code> annotation that must be added to each parameter of the action method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(ControllerConstants.CONTROLLER1_NAME)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="annotation">@DolphinModel</span>
+    <span class="directive">private</span> MyModel model;
+
+    <span class="annotation">@DolphinAction</span>(ControllerConstants.ACTION1_NAME)
+    <span class="directive">public</span> <span class="type">void</span> onAction(<span class="annotation">@Param</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>) <span class="predefined-type">String</span> id) {
+        <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Action was triggered for id </span><span class="delimiter">&quot;</span></span> + id);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Even if in this example only one parameter is defined the Dolphin Platform actions support any count of parameters. Here
+it&#8217;s only important that each parameter has a unique identifier in the context of the action and that the parameter are
+of a supported type. Currently Dolphin Platform supports the following types for parameters: <code>Integer</code>, <code>Long</code>, <code>Double</code>,
+<code>Float</code>, <code>Boolean</code>, <code>String</code>. It&#8217;s best practice to not use primitives here since null values are always supported and
+can end in an Exception since Java autoboxing can&#8217;t convert null to a primitive number or boolean. Some additional
+common types like <code>Date</code> will be added in future releases.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_benefits_of_managed_controllers"><a class="anchor" href="#_benefits_of_managed_controllers"></a>5.4. Benefits of managed controllers</h3>
+<div class="paragraph">
+<p>Since a controller is always created and managed by the underlying platform (like Spring or JavaEE) a developer don&#8217;t
+need to care about controller and model creation. The last sample already defines a full useable controller that will
+automatically be created (and a new model instance will be injected) whenever the related view is created on the client.
+Next to this the controller offers all the benefit that a managed beans offers based on the underlying platform. Based
+on this it&#8217;s no problem to use CDI If Dolphin Platform is used in a JavaEE environment. In addition default annotations
+like <code>@PostConstruct</code> and <code>@PreDestroy</code> are supported. The following example shows how such a controller could look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(ControllerConstants.CONTROLLER1_NAME)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="annotation">@DolphinModel</span>
+    <span class="directive">private</span> MyModel model;
+
+    <span class="annotation">@Inject</span>
+    <span class="directive">private</span> MyService service;
+
+    <span class="annotation">@PostContruct</span>
+    <span class="directive">public</span> <span class="type">void</span> init() {
+        <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello</span><span class="delimiter">&quot;</span></span>);
+    }
+
+    <span class="annotation">@PreDestroy</span>
+    <span class="directive">public</span> <span class="type">void</span> shutdown() {
+        <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Bye, bye</span><span class="delimiter">&quot;</span></span>);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s important to know that even if a controller instance is a managed object it can not be injected in any other
+managed bean. This belongs on some restrictions in the Dolphin Platform Architecture: Even if the lifecycle of a
+controller is well defined it&#8217;s possible to have several instances of the same controller. Let&#8217;s say your front-end
+contains a tabbed pane and you have 2 instances of the same view in this pane. By doing so it&#8217;s not possible to specify
+what controller instance should be injected in bean. For a future release of Dolphin Platform it&#8217;s planned to define
+parent-child-relations between controller instances. Currently the Dolphin Platform event bus should be used for
+communication between controllers and / or additional services.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_definition_of_the_client_scope"><a class="anchor" href="#_definition_of_the_client_scope"></a>5.5. Definition of the client scope</h3>
+<div class="paragraph">
+<p>Dolphin Platform provides an additional custom Scope called <code>ClientScope</code>. This scope is currently implemented for
+JavaEE and Spring and it&#8217;s defined as a scope that is "lower than the session scope". This scope is important if you
+want to create web application, for example. Since all the tabs of a browser share the same session it&#8217;s hard to define
+data that is only related to one tab in the browser. In that case the lifecycle of a client scope is bound to a tab in
+the browser and ends when the tab will be closed.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clientscope.png" alt="clientscope">
+</div>
+<div class="title">Figure 11. Definition of the client scope</div>
+</div>
+<div class="paragraph">
+<p>For both JavaEE and Spring a <code>@ClientScoped</code> annotation is defined that can be used to give any bean the specific scope:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@ClientScoped</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyLocalStoreService</span> {
+
+    <span class="directive">private</span> <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; values = <span class="keyword">new</span> <span class="predefined-type">ArrayList</span>();
+
+    <span class="directive">public</span> <span class="type">void</span> add(<span class="predefined-type">String</span> val) {
+        values.add(val);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The given service can now simply be injected in any controller:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(ControllerConstants.CONTROLLER1_NAME)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="annotation">@DolphinModel</span>
+    <span class="directive">private</span> MyModel model;
+
+    <span class="annotation">@Inject</span>
+    <span class="directive">private</span> MyLocalStoreService service;
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Internally the client scope is defined by an unique identifier that is shared between client and server with each
+request. Based on this the scope only "lives" inside a Dolphin Platform request roundtrip. At the moment this means
+that beans that are defined for the client scope can only be injected in Dolphin Platform controller classes or classes
+that are (transitive) injected in controllers. For a future release we plan to support general HTTP endpoints that can
+be called from a client and "live" in the client scope. This will be useful to provide specific content like images or
+files to the client.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_event_bus"><a class="anchor" href="#_the_event_bus"></a>6. The Event Bus</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Dolphin Platform provides an event bus that can be used to send events to client sessions on the server. by doing so
+it&#8217;s quite easy to create dynamic application with the Dolphin Platform that automatically propagate informations to
+several clients. A good example for such an application is a messaging app in that all messages that are typed by a user
+will be directly visible in the client instances of several other users.</p>
+</div>
+<div class="sect2">
+<h3 id="_general_overview_of_the_event_bus"><a class="anchor" href="#_general_overview_of_the_event_bus"></a>6.1. General overview of the event bus</h3>
+<div class="paragraph">
+<p>The event bus of Dolphin Platform can only be used on the server. It&#8217;s part of the basic server module
+(dolphin-platform-server`) and therefore no special dependencies need to be added to a Dolphin Platform application to
+use the event bus. The event bus implements the publish-subscribe-pattern and can be used to send events to all
+subscribers of a specific topic.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/event-bus1.png" alt="event bus1">
+</div>
+<div class="title">Figure 12. Overview of the event bus</div>
+</div>
+<div class="paragraph">
+<p>To do so a Dolphin Platform controller (or other beans that life in the Dolphin Platform client scope) can be registered
+as subscriber for a specific topic. Any managed bean of an application can send custom events to a defined topic. By
+doing so all subscribers will be notified and receive the event. The event can contain custom data which allows a
+developer to send informations to several controller instances.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/event-bus2.png" alt="event bus2">
+</div>
+<div class="title">Figure 13. Overview of the event bus</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_defining_a_topic"><a class="anchor" href="#_defining_a_topic"></a>6.2. Defining a topic</h3>
+<div class="paragraph">
+<p>As already mentioned the Dolphin Platform event bus is topic based. This means that all event must be published to a
+specified topic and all receivers are always subscribed to a topic. In Dolphin Platform the the topic is not simply
+defined by a String but by the <code>Topic&lt;E&gt;</code> class. By doing so the topic can already define what types of data can be send
+to this topic based on the generic identifier. Since topics are used at the publisher and the receiver site it&#8217;s best
+practice to define them as constants. Here is an example how topics can be specified:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">interface</span> <span class="class">EventTopics</span> {
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> Topic&lt;<span class="predefined-type">String</span>&gt; DESCRIPTION_ADDED_TOPIC = <span class="keyword">new</span> Topic();
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> Topic&lt;MyCustomBean&gt; DATA_CHANGED_TOPIC = <span class="keyword">new</span> Topic();
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example only items of type <code>MyCustomBean</code> can be send to the <code>DATA_CHANGED_TOPIC</code> topic. Internally the topic
+uses an unique identifier for specification. A developer can define it&#8217;s own identifier by simply passing a <code>String</code> to
+the constructor of the <code>Topic</code>. This is useful for debugging since you can see a readable name of the topic but in that
+case a developer must check that all topics have unique identifiers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">interface</span> <span class="class">EventTopics</span> {
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> Topic&lt;<span class="predefined-type">String</span>&gt; DESCRIPTION_ADDED_TOPIC = <span class="keyword">new</span> Topic(<span class="string"><span class="delimiter">&quot;</span><span class="content">descriptionAddedTopic</span><span class="delimiter">&quot;</span></span>);
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> Topic&lt;MyCustomBean&gt; DATA_CHANGED_TOPIC = <span class="keyword">new</span> Topic(<span class="string"><span class="delimiter">&quot;</span><span class="content">dataChangedTopic</span><span class="delimiter">&quot;</span></span>);
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sending_an_event"><a class="anchor" href="#_sending_an_event"></a>6.3. Sending an event</h3>
+<div class="paragraph">
+<p>The Dolphin Platform provides a injectable <code>DolphinEventBus</code> bean that must be used to send an event to a topic. By
+doing so each bean that is managed by the underlying container (like Spring or JavaEE) can publish events. To publish an
+event you always need to define the topic to that the event should be published. In addition data can be send as part of
+the event message. Publishing an event is a non-blocking operation. Here is an example how a event can be send to a
+specific topic:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@ApplicationScoped</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyLocalStoreService</span> {
+
+    <span class="annotation">@Inject</span>
+    <span class="directive">private</span> DolphinEventBus eventBus;
+
+    <span class="directive">public</span> <span class="type">void</span> addDescription(<span class="predefined-type">String</span> desc) {
+        eventBus.publish(EventTopics.DESCRIPTION_ADDED_TOPIC, desc);
+    }
+
+    <span class="directive">public</span> <span class="type">void</span> updateData(MyCustomBean data) {
+        eventBus.publish(EventTopics.DATA_CHANGED_TOPIC, data);
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example the previously created topics are used. As you can see data of the type that is defined in the generic
+identifier of the <code>Topic&lt;E&gt;</code> instances is send to the topic. Sending another type of data (an instance of a different
+class) will end in a compiler exception.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_receiving_events"><a class="anchor" href="#_receiving_events"></a>6.4. Receiving events</h3>
+<div class="paragraph">
+<p>To receive events of a specific topic the receiver must subscribe itself to the topic. This is done by adding a message
+listener to the topic. This listener will be called whenever a new event was published for the given topic. Since the
+event handling is always done in a Dolphin Platform communication roundtrip a event receiver must be a Dolphin Platform
+controller or a managed bean that is defined by the client scope. The following controller class shows how a subscription
+can be done:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(ControllerConstants.CONTROLLER_NAME)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="annotation">@DolphinModel</span>
+    <span class="directive">private</span> MyModel model;
+
+    <span class="annotation">@Inject</span>
+    <span class="directive">private</span> DolphinEventBus eventBus;
+
+    <span class="annotation">@PostContruct</span>
+    <span class="directive">public</span> <span class="type">void</span> init() {
+        eventBus.subscribe(EventTopics.DATA_CHANGED_TOPIC, e -&gt; {
+                <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Data changed: </span><span class="delimiter">&quot;</span></span> e.getData().getName();
+        });
+
+        eventBus.subscribe(EventTopics.DESCRIPTION_ADDED_TOPIC, e -&gt; {
+                model.getDescriptions().add(e.getDate());
+        });
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see the listener can simply access the data that was send to the topic by using <code>event.getData()</code>. Thanks to
+the typesafety of the event bus the data don' t need to be casted to the needed type. In the example you can see one big
+benefit of the event bus: Since all Dolphin Platform model instances will automatically be shared and synchronized between
+client and server the changes of the model that are done in the subscription of the <code>DESCRIPTION_ADDED_TOPIC</code> topic will
+automatically be snychronized with the client and can trigger an update of the UI. By doing so it&#8217;s quite easy to update
+several clients dynamically based on events.</p>
+</div>
+<div class="paragraph">
+<p>The <code>DolphinEventBus</code> doesn&#8217;t provide a method to unregister subscriptions. Instead of this the <code>subscribe(&#8230;&#8203;)</code> methods
+returns an object of type <code>Subscription</code>. This object can easily be used to unsubscribe from a topic. By doing so the
+following code defines a controller that can be dynamically subscribed and unsubscribed from a topic:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(ControllerConstants.CONTROLLER_NAME)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyViewController</span> {
+
+    <span class="annotation">@DolphinModel</span>
+    <span class="directive">private</span> MyModel model;
+
+    <span class="annotation">@Inject</span>
+    <span class="directive">private</span> DolphinEventBus eventBus;
+
+    <span class="directive">private</span> Subscription subscription;
+
+    <span class="annotation">@DolphinAction</span>
+    <span class="directive">public</span> <span class="type">void</span> activateLiveUpdates() {
+        <span class="keyword">if</span>(subscription != <span class="predefined-constant">null</span>) {
+            subscription = eventBus.subscribe(EventTopics.DESCRIPTION_ADDED_TOPIC, e -&gt; {
+                    model.getDescriptions().add(e.getDate());
+            });
+        }
+    }
+
+    <span class="annotation">@DolphinAction</span>
+    <span class="directive">public</span> <span class="type">void</span> deactivateLiveUpdates() {
+        <span class="keyword">if</span>(subscription != <span class="predefined-constant">null</span>) {
+            subscription.unsubscribe();
+            subscription = <span class="predefined-constant">null</span>;
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_use_cases_for_the_event_bus"><a class="anchor" href="#_use_cases_for_the_event_bus"></a>6.5. Use-cases for the event bus</h3>
+<div class="paragraph">
+<p>There are several use cases and scenarios that can simply be developed by using the Open Dolphin event bus.
+TODO</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_javaee_integration"><a class="anchor" href="#_javaee_integration"></a>7. JavaEE Integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Even if mostly all of the public server APIs of the Dolphin Platform don&#8217;t depend on the underlying container
+implementation a special dependency must be added to a project that is created as a JavaEE based application.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/javaee-dependency.png" alt="javaee dependency">
+</div>
+<div class="title">Figure 14. Dependencies for a JavaEE based server</div>
+</div>
+<div class="paragraph">
+<p>The <code>dolphin-platform-server-javaee</code> dependency adds the Dolphin Platform server API and JavaEE APIs as transitive
+dependencies. For a maven based project a minimum  <code>pom.xml</code> looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="preprocessor">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="tag">&lt;project</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://maven.apache.org/POM/4.0.0</span><span class="delimiter">&quot;</span></span>
+         <span class="attribute-name">xmlns:xsi</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.w3.org/2001/XMLSchema-instance</span><span class="delimiter">&quot;</span></span>
+         <span class="attribute-name">xsi:schemaLocation</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+    <span class="tag">&lt;modelVersion&gt;</span>4.0.0<span class="tag">&lt;/modelVersion&gt;</span>
+
+    <span class="tag">&lt;groupId&gt;</span>com.canoo.sample<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>server<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;version&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/version&gt;</span>
+
+    <span class="tag">&lt;dependencies&gt;</span>
+        <span class="tag">&lt;dependency&gt;</span>
+            <span class="tag">&lt;groupId&gt;</span>com.canoo.dolphin-platform<span class="tag">&lt;/groupId&gt;</span>
+            <span class="tag">&lt;artifactId&gt;</span>dolphin-platform-server-javaee<span class="tag">&lt;/artifactId&gt;</span>
+            <span class="tag">&lt;version&gt;</span>{dolphin-platform-version}<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;/dependency&gt;</span>
+    <span class="tag">&lt;/dependencies&gt;</span>
+
+<span class="tag">&lt;/project&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In most cases you will define the model classes in a separate module that is shared between client and server and server
+must be added as a second dependency to your application.
+Once you start the server application the Dolphin Platform bootstrap will automatically initialized.</p>
+</div>
+<div class="sect2">
+<h3 id="_configuration_of_the_application"><a class="anchor" href="#_configuration_of_the_application"></a>7.1. Configuration of the application</h3>
+<div class="paragraph">
+<p>The Dolphin Platform part of the application can be configured a <code>dolphin.properties</code> file. This file is not JavaEE
+specific and therefore it&#8217;s described in the general server part.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_next_steps"><a class="anchor" href="#_next_steps"></a>7.2. Next steps</h3>
+<div class="paragraph">
+<p>When developing a Dolphin Platform application with JavaEE you can use all the benefits of both worlds. This means that
+you can simply define CDI beans and inject them in Dolphin Platform controllers. A general overview of the Dolphin
+Platform server API can be found here.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_the_jumpstart"><a class="anchor" href="#_using_the_jumpstart"></a>7.3. Using the jumpstart</h3>
+<div class="paragraph">
+<p>Dolphin Platform provides several Maven archetypes to quickly create a full client server application. By doing so you
+only need an installed Maven on your system and can run the following command on a shell:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">mvn archetype:generate -Dfilter=com.canoo.dolphin-platform:</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will start a Maven build that creates a full client-server Maven project for you. A full documentation of the
+jumpstart can be found here.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spring_integration"><a class="anchor" href="#_spring_integration"></a>8. Spring Integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Even if mostly all of the public server APIs of the Dolphin Platform don&#8217;t depend on the underlying container
+implementation a special dependency must be added to a project that is created as a Spring (Boot) application.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/spring-dependency.png" alt="spring dependency">
+</div>
+<div class="title">Figure 15. Dependencies for a Spring based server</div>
+</div>
+<div class="paragraph">
+<p>The <code>dolphin-platform-server-spring</code> dependency adds the Dolphin Platform server API and Spring as transitive
+dependencies. For a maven based project a minimum  <code>pom.xml</code> looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="preprocessor">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="tag">&lt;project</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://maven.apache.org/POM/4.0.0</span><span class="delimiter">&quot;</span></span>
+         <span class="attribute-name">xmlns:xsi</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.w3.org/2001/XMLSchema-instance</span><span class="delimiter">&quot;</span></span>
+         <span class="attribute-name">xsi:schemaLocation</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+    <span class="tag">&lt;modelVersion&gt;</span>4.0.0<span class="tag">&lt;/modelVersion&gt;</span>
+
+    <span class="tag">&lt;groupId&gt;</span>com.canoo.sample<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>server<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;version&gt;</span>1.0.0-SNAPSHOT<span class="tag">&lt;/version&gt;</span>
+
+    <span class="tag">&lt;dependencies&gt;</span>
+        <span class="tag">&lt;dependency&gt;</span>
+            <span class="tag">&lt;groupId&gt;</span>com.canoo.dolphin-platform<span class="tag">&lt;/groupId&gt;</span>
+            <span class="tag">&lt;artifactId&gt;</span>dolphin-platform-server-spring<span class="tag">&lt;/artifactId&gt;</span>
+            <span class="tag">&lt;version&gt;</span>{dolphin-platform-version}<span class="tag">&lt;/version&gt;</span>
+        <span class="tag">&lt;/dependency&gt;</span>
+    <span class="tag">&lt;/dependencies&gt;</span>
+
+<span class="tag">&lt;/project&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In most cases you will define the model classes in a separate module that is shared between client and server and server
+must be added as a second dependency to your application.</p>
+</div>
+<div class="sect2">
+<h3 id="_defining_the_main_class_of_the_application"><a class="anchor" href="#_defining_the_main_class_of_the_application"></a>8.1. Defining the main class of the application</h3>
+<div class="paragraph">
+<p>To start your Spring Boot based server a class with a main method need be be defined. In the main method Spring must be
+started. In addition the Dolphin Platform bootstrap must be configured and initalialized. To do so Dolphin Platform
+provides the <code>@DolphinPlatformApplication</code> annotation that must be added to the main class to automatically load all
+needed configurations and trigger the Dolphin Platform Bootstrap. Based on the annotation a main class will always looks
+like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinPlatformApplication</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ServerMain</span> {
+
+    <span class="directive">public</span> <span class="directive">static</span> <span class="type">void</span> main(<span class="predefined-type">String</span>... args) {
+        SpringApplication.run(ServerMain.class, args);
+    }
+
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration_of_the_application_2"><a class="anchor" href="#_configuration_of_the_application_2"></a>8.2. Configuration of the application</h3>
+<div class="paragraph">
+<p>The server application can be configured by using all the possibilities that Spring offers for configuration. In
+addition a <code>dolphin.properties</code> file can be used to define a configuration for the Dolphin Platform part of the server.
+This file is not Spring specific and therefore it&#8217;s described in the general server part.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_next_steps_2"><a class="anchor" href="#_next_steps_2"></a>8.3. Next steps</h3>
+<div class="paragraph">
+<p>When developing a Dolphin Platform application with Spring you can use all the benefits of both worlds. This means that
+you can simply define Spring components and service and inject them in Dolphin Platform controllers. A general overview
+of the Dolphin Platform server API can be found here.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_the_jumpstart_2"><a class="anchor" href="#_using_the_jumpstart_2"></a>8.4. Using the jumpstart</h3>
+<div class="paragraph">
+<p>Dolphin Platform provides several Maven archetypes to quickly create a full client server application. By doing so you
+only need an installed Maven on your system and can run the following command on a shell:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">mvn archetype:generate -Dfilter=com.canoo.dolphin-platform:</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will start a Maven build that creates a full client-server Maven project for you. A full documentation of the
+jumpstart can be found here.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_server_configuration"><a class="anchor" href="#_server_configuration"></a>9. Server configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Dolphin Platform can simply be configured by a property file. To configure the server part of the Dolphin Platform
+a <code>dolphin.properties</code>-file must be created in the <code>META-INF</code> folder. In a Maven based project the file would be defined
+as <code>project/src/main/resources/META-INF/dolphin.properties</code>. This file must be defined as a regular Java property file.
+Here is an example how such a file might look:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="txt">openDolphinLogLevel=OFF
+useCrossSiteOriginFilter=true</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_supported_properties"><a class="anchor" href="#_supported_properties"></a>9.1. Supported properties</h3>
+<div class="paragraph">
+<p>Currently the following properties are supported by the Dolphin Platform:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Table title</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Supported values</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">openDolphinLogLevel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines the logging level for the remoting layer.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">off, severe, warning, info, config, fine, finer, finest, all</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">severe</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">useCrossSiteOriginFilter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean property that defines if the HTTP filter for the cross site origin policy should be used. By default the filter
+will be used.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true, false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">useSessionInvalidationServlet</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean property that defines if the servlet for session validation should be used. By default the servlet will not be used. We plan to remove the servlet completelly in a future release and this property is just for a fallback if not using the servelt will end in issues.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true, false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">servletMapping</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A string based property that defines the server URL endpoint for the Dolphin Platform.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">any String that defines an URL mapping</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/dolphin</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sessionTimeout</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A int that defines the http session timeout in seconds</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">any integer value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">900</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">idFilterUrlMappings</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A list that contains all endpoint that will be filtered by the id filter. This means that all requests for this
+endpoints must provide a client id in its header (Header name = dolphin_platform_intern_dolphinClientId).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a comma seperated list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">/*</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">maxClientsPerSession</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines how many clients can exist in a http session. By using the client scope you can have several clients that share
+a session but don&#8217;t use the same data (by using the client scope / dolphin session). By doing so several tabs in a
+browser can handle its own clients</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">any positive integer value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rootPackageForClasspathScan</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines the root package that should be used to scan the classpath for Dolphin Platform controllers. By default all
+classes in the classpath will be scanned but this might take some time in big projects. By defining a root package all
+classes that are located in this package or any subpackage of the root package will be scanned.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">a String that matches the java package structure like "com.canoo" or a empty string if the complete classpath should be
+scanned.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NULL (scan complete classpath)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mBeanRegistration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines if the Dolphin Platform will register custom MBeans to provide information about the platform and the sessions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true, false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">garbageCollectionActive</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">By activating the garbage collection the Dolphin Platform checks internally if Dolphin beans are referenced (for example
+in a Dolphin Bean hierarchy). If not this beans will automatically be removed on the server and the client. This is an
+unstable feature at the moment and should only be activated for tests.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true, false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_javafx_client_api"><a class="anchor" href="#_javafx_client_api"></a>10. JavaFX client API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When creating a JavaFX client you will normally use FXML to create your view. Next to the FXML file you will have a view
+controller to bind all the properties of the view and attach action handlers.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/javafx-1.png" alt="javafx 1">
+</div>
+<div class="title">Figure 16. Usage of FXML</div>
+</div>
+<div class="paragraph">
+<p>When talking about the dolphin Platform, this view controller is the perfect point to bind the view to the synchronized
+model and the server side controller. Therefore we call this class the "Binder". There are several ways how you can
+define such a binding but the most easy one is to extend the AbstractBinder class that is part of the Dolphin Platform
+JavaFX library. This class already implements the complete lifecycle of the view and you can simply bind the
+synchronized presentation model to your view properties. Here is a small example for a view that contains only one
+textfield and a button:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyBinder</span> <span class="directive">extends</span> AbstractBinder&lt;MyModel&gt; {
+
+  <span class="annotation">@FXML</span>
+  <span class="directive">private</span> <span class="predefined-type">Button</span> button;
+
+  <span class="annotation">@FXML</span>
+  <span class="directive">private</span> Textfield textfield;
+
+  <span class="directive">public</span> MyController() {
+    <span class="local-variable">super</span>(ControllerConstants.NAME);
+  }
+
+  <span class="annotation">@Override</span>
+  <span class="directive">public</span> <span class="type">void</span> onInit() {
+    FXBinder.bind(textfield.textProperty()).bidirectionalTo(getModel().nameProperty());
+    button.setOnAction(e -&gt; invoke(ControllerConstants.SAVE));
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the view binder is instantiated, the server controller and the model will automatically be created on the server.
+Since the model will be synchronized all the time between client and server you don&#8217;t need to create it on the client.
+After this initialization is done the onInit() method of the binder will be called. With this we bind the name property
+that is part of the synchronized model to the text property of the textfield. In addition, we define an action handler
+for the button. When the button is pressed an action in the server side controller should be called. To do so the
+abstract binder provides the invoke(String name) method that triggers actions on the server controller. In this specific
+case the server controller might look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinController</span>(ControllerConstants.NAME)
+<span class="directive">public</span> <span class="type">class</span> <span class="class">Controller</span> {
+
+  <span class="annotation">@Inject</span>
+  <span class="directive">private</span> PersistenceService persistence;
+
+  <span class="annotation">@DolphinModel</span>
+  <span class="directive">private</span> MyModel model;
+
+  <span class="annotation">@DolphinAction</span>(ControllerConstants.SAVE)
+  <span class="directive">public</span> <span class="type">void</span> save() {
+    persistence.insert(model.getName());
+  }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see we never send any data to the server. Since the model will be automatically synchronized, we can directly
+store the name string in the model to the database. The Dolphin Platform guarantees that the model will be the same as
+it&#8217;s on the client when pressing the button.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/javafx-2.png" alt="javafx 2">
+</div>
+<div class="title">Figure 17. MVC and Sync</div>
+</div>
+<div class="paragraph">
+<p>Another nice benefit that you might notice is that even if we have communication between the server and the client we
+don&#8217;t need to handle several threads. The Dolphin Platform handles all the concurrency and handles all actions in the
+right thread. Therefore, the binding between JavaFX properties and Dolphin properties will automatically be handled on
+the JavaFX application thread.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_validation_support"><a class="anchor" href="#_validation_support"></a>11. Validation Support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Dolphin Platform provides the optional <code>dolphin-platform-bean-validation</code> module that adds Java Bean Validation
+(JSR 303) support to the model layer of the Dolphin Platform. To use the validation support the module must be added as
+a dependency to your project:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>com.canoo.dolphin-platform<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>dolphin-platform-bean-validation<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;version&gt;</span>{dolphin-platform-version}<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you have defined a common module that contains the model descriptions and is shared between client and server you can
+simply replace the <code>dolphin-platform-core</code> dependency with <code>dolphin-platform-bean-validation</code> since the validation module
+adds a transitive dependency to the core module.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/validation-dependency.png" alt="validation dependency">
+</div>
+<div class="title">Figure 18. Dependencies for the validation module</div>
+</div>
+<div class="paragraph">
+<p>The <code>dolphin-platform-bean-validation</code> module don&#8217;t depend on a JSR-303 implementation. If your application server don&#8217;t
+provide an implementation you need to add for example Hibernate Validation as a dependency. Here is an example for Maven:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>org.hibernate<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>hibernate-validator<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;version&gt;</span>5.1.3.Final<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span>
+<span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>org.glassfish<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>javax.el<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;version&gt;</span>3.0.0<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you depend on JavaEE your application container will automatically provide an implementation for you. In that case you
+don&#8217;t need to add a specific implementation as a dependency.</p>
+</div>
+<div class="sect2">
+<h3 id="_using_validation_constraints"><a class="anchor" href="#_using_validation_constraints"></a>11.1. Using validation constraints</h3>
+<div class="paragraph">
+<p>Once the module is added as a dependency the contrains annotations of JSR-303 can be used in Dolphin Platform models.
+To do so the <code>Property</code> fields of a model bean must be annotated with the contrains annotations. Here is an example that
+defines a "not null" constrain for a <code>String</code> property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="annotation">@DolphinBean</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyModel</span> {
+
+    <span class="annotation">@NotNull</span>
+    <span class="directive">private</span> Property&lt;<span class="predefined-type">String</span>&gt; value;
+
+    <span class="directive">public</span> Property&lt;<span class="predefined-type">String</span>&gt; valueProperty() {
+        <span class="keyword">return</span> value1;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A general description of the Dolphin Platform model API can be found here.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_validate_a_model"><a class="anchor" href="#_validate_a_model"></a>11.2. Validate a model</h3>
+<div class="paragraph">
+<p>By using a validator you can now easily validate instances of the model as described in the bean validation documentation
+or several tutorials. Here is a basic code snippet that creates a validator by hand and validates a Dolphin Platform model:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">Configuration</span>&lt;?&gt; validationConf = Validation.byDefaultProvider().configure();
+
+<span class="predefined-type">Validator</span> validator = validationConf.buildValidatorFactory().getValidator();
+
+<span class="predefined-type">Set</span>&lt;ConstraintViolation&lt;TestBean&gt;&gt; violations = validator.validate(dolphinModel);
+<span class="keyword">if</span>(!violations.isEmpty()) {
+    <span class="comment">//Handle violations</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Some platforms provide injection of a <code>Validator</code> instance. In that case you don&#8217;t need to create a configuration and
+validator by hand.
+Unresolved directive in index.adoc - include::build.adoc[]</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Version 0.9.0-SNAPSHOT<br>
+Last updated 2016-09-28 10:22:14 +00:00
+</div>
+</div>
+</body>
+</html>
